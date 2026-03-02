@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambridge MA — Key Funding Events</title>
+<style>
+  /* ── Reset & Base ─────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:       #0a2540;
+    --navy-mid:   #123a5e;
+    --blue:       #0a6fbf;
+    --blue-light: #e8f3fc;
+    --accent:     #1a9e6e;
+    --gold:       #c8960c;
+    --gold-bg:    #fef9ec;
+    --red:        #c0392b;
+    --purple:     #6c3db5;
+    --purple-bg:  #f0eafa;
+    --text:       #1a1a2e;
+    --text-soft:  #5a6a7a;
+    --border:     #dde6f0;
+    --row-alt:    #f4f8fd;
+    --white:      #ffffff;
+    --radius:     6px;
+    --font-body:  'Georgia', 'Times New Roman', serif;
+    --font-ui:    -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  html, body {
+    width: 100%; height: 100%;
+    font-family: var(--font-ui);
+    background: #f0f4f9;
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+    /* Critical for iframe: no overflow clipping issues */
+    overflow-x: hidden;
+  }
+
+  /* ── Layout Shell ─────────────────────────────────────── */
+  .shell {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Header ───────────────────────────────────────────── */
+  .header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    color: var(--white);
+    padding: 22px 28px 18px;
+    border-bottom: 3px solid var(--blue);
+    flex-shrink: 0;
+  }
+  .header-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .header h1 {
+    font-family: var(--font-body);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    color: var(--white);
+  }
+  .header h1 span { color: #7eb8e8; }
+  .header-sub {
+    margin-top: 4px;
+    font-size: 0.8rem;
+    color: #93b8d8;
+    font-family: var(--font-ui);
+  }
+  .header-badge {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 0.72rem;
+    color: #c8dff2;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+
+  /* ── Stats Bar ────────────────────────────────────────── */
+  .stats-bar {
+    display: flex;
+    gap: 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    overflow-x: auto;
+  }
+  .stat {
+    padding: 10px 20px;
+    border-right: 1px solid var(--border);
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+  .stat-num {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: var(--font-body);
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Tabs ─────────────────────────────────────────────── */
+  .tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    padding: 0 20px;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .tab-btn {
+    padding: 10px 16px;
+    border: none;
+    background: none;
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { color: var(--navy); }
+  .tab-btn.active { color: var(--navy); border-bottom-color: var(--blue); }
+
+  /* ── Main Content ─────────────────────────────────────── */
+  .content { flex: 1; padding: 16px 20px 32px; overflow: hidden; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Controls Row ─────────────────────────────────────── */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 160px;
+    max-width: 280px;
+  }
+  .search-icon {
+    position: absolute;
+    left: 9px; top: 50%;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 12px;
+    pointer-events: none;
+  }
+  .search-input {
+    width: 100%;
+    padding: 7px 10px 7px 28px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--text);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--blue); }
+
+  .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+  .pill {
+    padding: 5px 13px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: var(--navy); color: var(--navy); }
+  .pill.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
+  .count-badge {
+    margin-left: auto;
+    font-size: 0.72rem;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  /* ── Table ────────────────────────────────────────────── */
+  .table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--white);
+    /* Crucial for SharePoint iframe — explicit overflow */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+  }
+
+  thead tr {
+    background: var(--navy);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  thead th {
+    padding: 10px 12px;
+    text-align: left;
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #c8dff2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s;
+  }
+  thead th:hover { color: var(--white); }
+  thead th .sort-arrow { opacity: 0.4; margin-left: 4px; }
+  thead th.sort-asc .sort-arrow::after { content: ' ▲'; opacity: 1; }
+  thead th.sort-desc .sort-arrow::after { content: ' ▼'; opacity: 1; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:nth-child(even) { background: var(--row-alt); }
+  tbody tr:hover { background: #e4eef8 !important; }
+  tbody tr.hidden { display: none; }
+
+  tbody td {
+    padding: 10px 12px;
+    vertical-align: top;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  /* ── Cell Styles ──────────────────────────────────────── */
+  .td-date { color: var(--text-soft); font-size: 0.75rem; white-space: nowrap; }
+  .td-company { font-weight: 700; color: var(--navy); white-space: nowrap; }
+  .td-amount { font-weight: 700; color: var(--navy); white-space: nowrap; font-family: var(--font-body); font-size: 0.85rem; }
+  .td-round { font-size: 0.75rem; color: var(--text-soft); white-space: nowrap; }
+  .td-investors { font-size: 0.75rem; color: var(--text-soft); max-width: 160px; }
+  .td-notes { font-size: 0.75rem; color: var(--text-soft); max-width: 200px; }
+
+  /* Sector tags */
+  .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    white-space: nowrap;
+    margin: 1px 1px 1px 0;
+  }
+  .tag-ai      { background: #dbeafe; color: #1e40af; }
+  .tag-health  { background: #d1fae5; color: #065f46; }
+  .tag-biotech { background: #dcfce7; color: #166534; }
+  .tag-energy  { background: #fef3c7; color: #92400e; }
+  .tag-music   { background: var(--purple-bg); color: var(--purple); }
+  .tag-drug    { background: #ffe4e6; color: #9f1239; }
+  .tag-rna     { background: #fce7f3; color: #9d174d; }
+  .tag-micro   { background: #ecfdf5; color: #065f46; }
+  .tag-storage { background: #fff7ed; color: #c2410c; }
+
+  /* C-Suite cell */
+  .td-csuite { min-width: 160px; }
+  .exec-entry { margin-bottom: 4px; }
+  .exec-name {
+    display: inline;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--blue);
+    transition: color 0.15s;
+  }
+  .exec-name:hover { color: var(--navy); }
+  .exec-role {
+    display: block;
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    margin-top: 1px;
+  }
+
+  /* Source link */
+  .src-link {
+    font-size: 0.72rem;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--blue);
+    white-space: nowrap;
+  }
+  .src-link:hover { color: var(--navy); }
+
+  /* ── No Results ───────────────────────────────────────── */
+  .no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-soft);
+    font-size: 0.85rem;
+    display: none;
+  }
+
+  /* ── Ecosystem Panel ──────────────────────────────────── */
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .eco-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    transition: box-shadow 0.15s;
+  }
+  .eco-card:hover { box-shadow: 0 3px 12px rgba(10,37,64,0.08); }
+  .eco-card-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-soft);
+    margin-bottom: 6px;
+  }
+  .eco-card-data {
+    font-size: 0.8rem;
+    color: var(--text);
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .eco-card-data strong { color: var(--navy); }
+  .eco-card-src {
+    font-size: 0.7rem;
+    color: var(--blue);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--blue);
+  }
+  .eco-card-src:hover { color: var(--navy); }
+
+  /* ── Sources Panel ────────────────────────────────────── */
+  .sources-list { display: flex; flex-direction: column; gap: 8px; }
+  .source-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    transition: box-shadow 0.15s;
+  }
+  .source-row:hover { box-shadow: 0 2px 8px rgba(10,37,64,0.06); }
+  .source-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+  .source-name { font-weight: 600; font-size: 0.8rem; color: var(--navy); min-width: 160px; }
+  .source-desc { font-size: 0.75rem; color: var(--text-soft); flex: 1; }
+  .source-link-btn {
+    font-size: 0.72rem;
+    color: var(--blue);
+    text-decoration: none;
+    border: 1px solid var(--blue);
+    border-radius: 12px;
+    padding: 3px 10px;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .source-link-btn:hover { background: var(--blue); color: var(--white); }
+
+  /* ── Section label ────────────────────────────────────── */
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-soft);
+    border-left: 3px solid var(--blue);
+    padding-left: 8px;
+    margin: 20px 0 10px;
+  }
+
+  /* ── Footer ───────────────────────────────────────────── */
+  .footer {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 8px 20px;
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* ── Scrollbar styling (webkit) ───────────────────────── */
+  .table-wrap::-webkit-scrollbar { height: 6px; }
+  .table-wrap::-webkit-scrollbar-track { background: var(--row-alt); }
+  .table-wrap::-webkit-scrollbar-thumb { background: #c0cfe0; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <h1>Cambridge, <span>MA</span> — Key Funding Events</h1>
+        <div class="header-sub">Major venture &amp; growth rounds · Companies headquartered in Cambridge · 2021–2026</div>
+      </div>
+      <div class="header-badge">Updated Feb 2026</div>
+    </div>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Funding Events</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">9</span>
+      <span class="stat-label">Companies</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">$5.8B+</span>
+      <span class="stat-label">Total Tracked</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">5</span>
+      <span class="stat-label">Sectors</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">2021–2026</span>
+      <span class="stat-label">Date Range</span>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('funding', this)">Funding Events</button>
+    <button class="tab-btn" onclick="switchTab('ecosystem', this)">Ecosystem Context</button>
+    <button class="tab-btn" onclick="switchTab('sources', this)">Data Sources</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── TAB 1: FUNDING EVENTS ── -->
+    <div id="tab-funding" class="tab-panel active">
+
+      <div class="controls">
+        <div class="search-wrap">
+          <span class="search-icon">&#128269;</span>
+          <input class="search-input" id="searchInput" type="text"
+            placeholder="Search company, investor…"
+            oninput="applyFilters()">
+        </div>
+        <div class="filter-pills">
+          <button class="pill active" data-sector="all"     onclick="setPill(this)">All</button>
+          <button class="pill"        data-sector="ai"      onclick="setPill(this)">AI / Tech</button>
+          <button class="pill"        data-sector="biotech" onclick="setPill(this)">Biotech</button>
+          <button class="pill"        data-sector="energy"  onclick="setPill(this)">Energy</button>
+          <button class="pill"        data-sector="health"  onclick="setPill(this)">Health</button>
+          <button class="pill"        data-sector="music"   onclick="setPill(this)">AI Music</button>
+        </div>
+        <span class="count-badge" id="rowCount">Showing 12 of 12</span>
+      </div>
+
+      <div class="table-wrap">
+        <table id="fundingTable">
+          <thead>
+            <tr>
+              <th onclick="sortTable(0)">Date<span class="sort-arrow"></span></th>
+              <th onclick="sortTable(1)">Company<span class="sort-arrow"></span></th>
+              <th>Sector</th>
+              <th onclick="sortTable(3)">Amount<span class="sort-arrow"></span></th>
+              <th>Round</th>
+              <th>Lead Investor(s)</th>
+              <th>C-Suite</th>
+              <th>Notes</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+
+            <!-- ░░ 2025–2026 ░░ -->
+            <tr data-sector="ai health">
+              <td class="td-date">Oct 2025</td>
+              <td class="td-company">OpenEvidence</td>
+              <td>
+                <span class="tag tag-ai">AI</span>
+                <span class="tag tag-health">Health</span>
+              </td>
+              <td class="td-amount">$200M</td>
+              <td class="td-round">Series C</td>
+              <td class="td-investors">—</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/danielnadler/" target="_blank">Daniel Nadler</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">AI chatbot for medical field; valued at $6B. Second round of 2025.</td>
+              <td><a class="src-link" href="https://techcrunch.com/2026/01/19/here-are-the-49-us-ai-startups-that-have-raised-100m-or-more-in-2025/" target="_blank">TechCrunch</a></td>
+            </tr>
+
+            <tr data-sector="ai health">
+              <td class="td-date">Jul 2025</td>
+              <td class="td-company">OpenEvidence</td>
+              <td>
+                <span class="tag tag-ai">AI</span>
+                <span class="tag tag-health">Health</span>
+              </td>
+              <td class="td-amount">$210M</td>
+              <td class="td-round">Series B</td>
+              <td class="td-investors">Kleiner Perkins, GV</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/danielnadler/" target="_blank">Daniel Nadler</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">AI-powered search for clinicians; valued at $3.5B.</td>
+              <td><a class="src-link" href="https://techcrunch.com/2026/01/19/here-are-the-49-us-ai-startups-that-have-raised-100m-or-more-in-2025/" target="_blank">TechCrunch</a></td>
+            </tr>
+
+            <tr data-sector="ai drug">
+              <td class="td-date">Mar 2025</td>
+              <td class="td-company">Insilico Medicine</td>
+              <td><span class="tag tag-ai">AI</span><span class="tag tag-drug">Drug Discovery</span></td>
+              <td class="td-amount">$110M</td>
+              <td class="td-round">Series E</td>
+              <td class="td-investors">Value Partners, Pudong Chuangtou</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/zhavoronkov/" target="_blank">Alex Zhavoronkov</a>
+                  <span class="exec-role">Co-CEO &amp; Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">Generative AI drug discovery; valued at $1B.</td>
+              <td><a class="src-link" href="https://techcrunch.com/2026/01/19/here-are-the-49-us-ai-startups-that-have-raised-100m-or-more-in-2025/" target="_blank">TechCrunch</a></td>
+            </tr>
+
+            <tr data-sector="biotech">
+              <td class="td-date">Dec 2025</td>
+              <td class="td-company">Atavistik Bio</td>
+              <td><span class="tag tag-biotech">Biotech</span></td>
+              <td class="td-amount">$120M</td>
+              <td class="td-round">Series B</td>
+              <td class="td-investors">The Column Group, Nextech Invest</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/bryan-stuart-b178ba4/" target="_blank">Bryan Stuart</a>
+                  <span class="exec-role">CEO</span>
+                </div>
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/marion-dorsch-a33a157/" target="_blank">Marion Dorsch</a>
+                  <span class="exec-role">President &amp; CSO</span>
+                </div>
+              </td>
+              <td class="td-notes">Allosteric small molecule therapeutics; $220M raised to date.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-funding-rounds-databricks-cyera/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <tr data-sector="energy">
+              <td class="td-date">Aug 2025</td>
+              <td class="td-company">Commonwealth Fusion</td>
+              <td><span class="tag tag-energy">Energy</span></td>
+              <td class="td-amount">$863M</td>
+              <td class="td-round">Growth Round</td>
+              <td class="td-investors">NVIDIA, Google, Temasek</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/mumgaard/" target="_blank">Bob Mumgaard</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">$2.9B raised total. Building first commercial fusion plant in Virginia.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-funding-rounds-commonwealth-fusion-wugen/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <tr data-sector="music ai">
+              <td class="td-date">Nov 2025</td>
+              <td class="td-company">Suno</td>
+              <td><span class="tag tag-music">AI Music</span></td>
+              <td class="td-amount">$250M</td>
+              <td class="td-round">Series C</td>
+              <td class="td-investors">Menlo Ventures</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/mikeyshulman/" target="_blank">Mikey Shulman</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">AI music from text prompts; valued at $2.45B. $300M ARR as of Feb 2026.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-funding-rounds-ai-fintech-lambda/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <!-- ░░ 2024 ░░ -->
+            <tr data-sector="music ai">
+              <td class="td-date">May 2024</td>
+              <td class="td-company">Suno</td>
+              <td><span class="tag tag-music">AI Music</span></td>
+              <td class="td-amount">$125M</td>
+              <td class="td-round">Series B</td>
+              <td class="td-investors">Lightspeed, Matrix</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/mikeyshulman/" target="_blank">Mikey Shulman</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">10M users generating music within 8 months of launch.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-rounds-biotech-web3-scale-ai-altrubio/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <tr data-sector="biotech">
+              <td class="td-date">Apr 2024</td>
+              <td class="td-company">Diagonal Therapeutics</td>
+              <td><span class="tag tag-biotech">Biotech</span></td>
+              <td class="td-amount">$128M</td>
+              <td class="td-round">Series A</td>
+              <td class="td-investors">Atlas Venture, Lightspeed, BVF</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/alexlugovskoy/" target="_blank">Alex Lugovskoy</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">Agonist antibodies for HHT and pulmonary arterial hypertension.</td>
+              <td><a class="src-link" href="https://www.builtinboston.com/articles/boston-top-funding-rounds-april-2024-20240501" target="_blank">Built In Boston</a></td>
+            </tr>
+
+            <!-- ░░ 2023 ░░ -->
+            <tr data-sector="biotech rna">
+              <td class="td-date">Apr 2023</td>
+              <td class="td-company">Orbital Therapeutics</td>
+              <td><span class="tag tag-rna">Biotech / RNA</span></td>
+              <td class="td-amount">$270M</td>
+              <td class="td-round">Series A</td>
+              <td class="td-investors">Arch Venture, a16z Bio</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/ron-philip-6a4b3b4/" target="_blank">Ron Philip</a>
+                  <span class="exec-role">CEO</span>
+                </div>
+              </td>
+              <td class="td-notes">RNA medicines platform. Acquired by BMS for $1.5B (2025).</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-funding-rounds-biotech-startups-orbital/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <tr data-sector="biotech">
+              <td class="td-date">Apr 2023</td>
+              <td class="td-company">Vedanta Biosciences</td>
+              <td><span class="tag tag-micro">Microbiome</span></td>
+              <td class="td-amount">$107M</td>
+              <td class="td-round">Series D</td>
+              <td class="td-investors">AXA IM Alts, AMR Action Fund</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/bernat/" target="_blank">Bernat Olle</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">Oral bacterial therapies for C. difficile infection and IBD.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-funding-rounds-biotech-startups-orbital/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <!-- ░░ 2021–2022 ░░ -->
+            <tr data-sector="energy">
+              <td class="td-date">Nov 2021</td>
+              <td class="td-company">Commonwealth Fusion</td>
+              <td><span class="tag tag-energy">Energy</span></td>
+              <td class="td-amount">$1.8B+</td>
+              <td class="td-round">Series B</td>
+              <td class="td-investors">Tiger Global, Bill Gates, Time Ventures</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/mumgaard/" target="_blank">Bob Mumgaard</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+              </td>
+              <td class="td-notes">Largest fusion startup funding round at the time. 24+ investors.</td>
+              <td><a class="src-link" href="https://news.crunchbase.com/venture/biggest-vc-startup-funding-deals-commonwealth-fusion-systems-moonpay/" target="_blank">Crunchbase</a></td>
+            </tr>
+
+            <tr data-sector="energy storage">
+              <td class="td-date">2022</td>
+              <td class="td-company">Form Energy</td>
+              <td><span class="tag tag-storage">Energy Storage</span></td>
+              <td class="td-amount">$450M</td>
+              <td class="td-round">Series E</td>
+              <td class="td-investors">TPG Rise Climate</td>
+              <td class="td-csuite">
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/mateojaramillo/" target="_blank">Mateo Jaramillo</a>
+                  <span class="exec-role">CEO &amp; Co-Founder</span>
+                </div>
+                <div class="exec-entry">
+                  <a class="exec-name" href="https://www.linkedin.com/in/tedwiley/" target="_blank">Ted Wiley</a>
+                  <span class="exec-role">President &amp; COO</span>
+                </div>
+              </td>
+              <td class="td-notes">Iron-air battery for 100-hr grid storage; factory in WV (750+ jobs).</td>
+              <td><a class="src-link" href="https://www.builtinboston.com/articles/boston-top-funding-rounds-2022" target="_blank">Built In Boston</a></td>
+            </tr>
+
+          </tbody>
+        </table>
+        <div class="no-results" id="noResults">No matching records found. Try adjusting your search or filter.</div>
+      </div>
+
+    </div><!-- /tab-funding -->
+
+
+    <!-- ── TAB 2: ECOSYSTEM CONTEXT ── -->
+    <div id="tab-ecosystem" class="tab-panel">
+
+      <div class="section-label">Massachusetts Biopharma — 2024 Snapshot</div>
+      <div class="eco-grid">
+
+        <div class="eco-card">
+          <div class="eco-card-label">MA Biopharma VC 2024</div>
+          <div class="eco-card-data"><strong>$7.89B</strong> total VC across 222 rounds. Cambridge led deal count (73 deals, $2.2B). Average round $35.5M vs $25.2M national average.</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/massbio-year-end-funding-report-released/" target="_blank">MassBio 2024 Report →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">National Share</div>
+          <div class="eco-card-data"><strong>28.3%</strong> of national biopharma VC — second only to California (41.6%), well above New York (6.6%).</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/massbio-year-end-funding-report-released/" target="_blank">MassBio 2024 Report →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">Cambridge VC Trend</div>
+          <div class="eco-card-data"><strong>72%</strong> of MA VC went outside Cambridge in 2024 — highest ever. Boston surpassed Cambridge in total dollars ($2.3B vs $2.2B). Lab rents driving companies to Watertown &amp; Waltham.</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/massbio-year-end-funding-report-released/" target="_blank">MassBio 2024 Report →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">M&amp;A Activity 2024</div>
+          <div class="eco-card-data">Total M&amp;A value surged to <strong>$42.6B</strong> from $13B in 2023. BMS acquisition of Karuna Therapeutics ($13.8B) was the top deal. 32 total deals.</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/massbio-year-end-funding-report-released/" target="_blank">MassBio 2024 Report →</a>
+        </div>
+
+      </div>
+
+      <div class="section-label">Kendall Square &amp; Infrastructure</div>
+      <div class="eco-grid">
+
+        <div class="eco-card">
+          <div class="eco-card-label">Kendall Square</div>
+          <div class="eco-card-data">Cited as <strong>"most innovative square mile on earth."</strong> 250+ biotech companies. ARPA-H Investor Catalyst Hub selected for Kendall Sq. in 2023.</div>
+          <a class="eco-card-src" href="https://www.thecrimson.com/article/2023/10/23/arpa-h-hub-kendall/" target="_blank">Harvard Crimson →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">LabCentral 10-Year Impact</div>
+          <div class="eco-card-data">Residents raised <strong>$18B+</strong> and created <strong>6,000+ jobs</strong> since 2013. 243,000 sq ft across Kendall Square and Harvard campus.</div>
+          <a class="eco-card-src" href="https://www.labcentral.org/2024-impact-report" target="_blank">LabCentral 2024 Report →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">AI BioHub Launch — Mar 2025</div>
+          <div class="eco-card-data">LabCentral + C10 Labs launch AI BioHub in Kendall Sq., backed by <strong>$1.9M MassTech</strong> Sector Spark grant. First cohort summer 2025.</div>
+          <a class="eco-card-src" href="https://www.prnewswire.com/news-releases/labcentral-and-c10-labs-unveil-new-ai-biohub-in-kendall-square-302404551.html" target="_blank">PR Newswire →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">Biogen HQ Construction — Sep 2025</div>
+          <div class="eco-card-data">Biogen breaking ground on new <strong>580,000 sq ft</strong> global HQ at MIT's Kendall Common. 15-year lease. First building on MIT's Kendall Common development.</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/building-breakthroughs-in-kendall-square-and-beyond/" target="_blank">MassBio →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">Mass Leads Act</div>
+          <div class="eco-card-data">Gov. Healey signed <strong>$1B</strong> Life Sciences Initiative re-authorization. Proposed additional <strong>$400M DRIVE Initiative</strong> to offset federal NIH funding cuts.</div>
+          <a class="eco-card-src" href="https://www.massbio.org/news/recent-news/building-breakthroughs-in-kendall-square-and-beyond/" target="_blank">MassBio →</a>
+        </div>
+
+        <div class="eco-card">
+          <div class="eco-card-label">Arena BioWorks Closure — Nov 2025</div>
+          <div class="eco-card-data"><strong>$500M</strong> billionaire-funded research institute abruptly shut, citing <em>"policy uncertainty and weak funding."</em> Had 48K SF lease at 399 Binney St, Kendall Sq.</div>
+          <a class="eco-card-src" href="https://www.bisnow.com/boston/news/life-sciences/500m-biotech-research-hub-shuts-down-in-another-blow-for-lab-market-131763" target="_blank">Bisnow →</a>
+        </div>
+
+      </div>
+    </div><!-- /tab-ecosystem -->
+
+
+    <!-- ── TAB 3: DATA SOURCES ── -->
+    <div id="tab-sources" class="tab-panel">
+      <div class="section-label">Primary Research Sources</div>
+      <div class="sources-list">
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#e74c3c"></div>
+          <div class="source-name">Crunchbase News</div>
+          <div class="source-desc">Weekly funding round coverage; primary source for deal-level data on Cambridge companies.</div>
+          <a class="source-link-btn" href="https://news.crunchbase.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#3498db"></div>
+          <div class="source-name">TechCrunch</div>
+          <div class="source-desc">Annual AI mega-round tracking; 2025 US AI startups raising $100M+ list.</div>
+          <a class="source-link-btn" href="https://techcrunch.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#27ae60"></div>
+          <div class="source-name">MassBio</div>
+          <div class="source-desc">Annual Massachusetts biopharma funding &amp; pipeline reports. Best source for ecosystem-level data.</div>
+          <a class="source-link-btn" href="https://www.massbio.org" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#f39c12"></div>
+          <div class="source-name">Built In Boston</div>
+          <div class="source-desc">Monthly roundups of largest Boston/Cambridge funding rounds. Good for $50M+ raises.</div>
+          <a class="source-link-btn" href="https://www.builtinboston.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#9b59b6"></div>
+          <div class="source-name">Failory</div>
+          <div class="source-desc">93 Cambridge startups to watch in 2026 — useful for identifying companies before they raise.</div>
+          <a class="source-link-btn" href="https://www.failory.com/startups/cambridge" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#1abc9c"></div>
+          <div class="source-name">Crunchbase Hub — Cambridge</div>
+          <div class="source-desc">Live continuously-updated Cambridge MA startup funding database.</div>
+          <a class="source-link-btn" href="https://www.crunchbase.com/hub/cambridge-startups" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#e67e22"></div>
+          <div class="source-name">Boston Globe</div>
+          <div class="source-desc">Regional coverage of biotech ecosystem shifts; lab real estate and talent trends.</div>
+          <a class="source-link-btn" href="https://www.bostonglobe.com" target="_blank">Visit →</a>
+        </div>
+
+        <div class="source-row">
+          <div class="source-dot" style="background:#2c3e50"></div>
+          <div class="source-name">Bisnow Boston</div>
+          <div class="source-desc">Life sciences real estate and company news; tracks lab leases and closures in Kendall Sq.</div>
+          <a class="source-link-btn" href="https://www.bisnow.com/boston" target="_blank">Visit →</a>
+        </div>
+
+      </div>
+    </div><!-- /tab-sources -->
+
+  </div><!-- /content -->
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Compiled from public sources &nbsp;·&nbsp; Data may be incomplete &nbsp;·&nbsp; All figures in USD &nbsp;·&nbsp; Last updated February 2026 &nbsp;·&nbsp; CBRE Research
+  </div>
+
+</div><!-- /shell -->
+
+
+<script>
+  // ── Scoped to avoid conflicts in SharePoint iframe environment ──────────────
+
+  var _activeSector = 'all';
+
+  function switchTab(name, btn) {
+    var panels = document.querySelectorAll('.tab-panel');
+    var btns   = document.querySelectorAll('.tab-btn');
+    for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+    for (var i = 0; i < btns.length; i++)   btns[i].classList.remove('active');
+    document.getElementById('tab-' + name).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function setPill(btn) {
+    var pills = document.querySelectorAll('.pill');
+    for (var i = 0; i < pills.length; i++) pills[i].classList.remove('active');
+    btn.classList.add('active');
+    _activeSector = btn.getAttribute('data-sector');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    var query   = document.getElementById('searchInput').value.toLowerCase().trim();
+    var rows    = document.querySelectorAll('#tableBody tr');
+    var visible = 0;
+
+    for (var i = 0; i < rows.length; i++) {
+      var row    = rows[i];
+      var sector = (row.getAttribute('data-sector') || '').toLowerCase();
+      var text   = row.innerText.toLowerCase();
+
+      var sectorMatch = (_activeSector === 'all') || sector.indexOf(_activeSector) > -1;
+      var searchMatch = (query === '') || (text.indexOf(query) > -1);
+
+      if (sectorMatch && searchMatch) {
+        row.classList.remove('hidden');
+        visible++;
+      } else {
+        row.classList.add('hidden');
+      }
+    }
+
+    var badge    = document.getElementById('rowCount');
+    var noResult = document.getElementById('noResults');
+    badge.textContent = 'Showing ' + visible + ' of ' + rows.length;
+    noResult.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  // ── Column sort ─────────────────────────────────────────────────────────────
+  var _sortCol = -1;
+  var _sortDir = 1;
+
+  function sortTable(colIndex) {
+    var tbody = document.getElementById('tableBody');
+    var rows  = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+
+    if (_sortCol === colIndex) {
+      _sortDir *= -1;
+    } else {
+      _sortCol = colIndex;
+      _sortDir = 1;
+    }
+
+    // Update header arrows
+    var ths = document.querySelectorAll('thead th');
+    for (var i = 0; i < ths.length; i++) {
+      ths[i].classList.remove('sort-asc', 'sort-desc');
+    }
+    ths[colIndex].classList.add(_sortDir === 1 ? 'sort-asc' : 'sort-desc');
+
+    rows.sort(function(a, b) {
+      var aText = (a.cells[colIndex] ? a.cells[colIndex].innerText : '').trim();
+      var bText = (b.cells[colIndex] ? b.cells[colIndex].innerText : '').trim();
+
+      // Numeric sort for Amount column
+      if (colIndex === 3) {
+        var aNum = parseFloat(aText.replace(/[^0-9.]/g, '')) || 0;
+        var bNum = parseFloat(bText.replace(/[^0-9.]/g, '')) || 0;
+        return (aNum - bNum) * _sortDir;
+      }
+      return aText.localeCompare(bText) * _sortDir;
+    });
+
+    for (var i = 0; i < rows.length; i++) {
+      tbody.appendChild(rows[i]);
+    }
+  }
+</script>
+
+</body>
+</html>
